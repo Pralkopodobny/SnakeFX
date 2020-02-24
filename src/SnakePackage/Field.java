@@ -22,3 +22,4 @@ public class Field extends Rectangle {
         return coordinates.getKey() == getTranslateX() && coordinates.getValue() == getTranslateY();
     }
 }
+//Ziemniak
