@@ -22,6 +22,8 @@ public class Game extends Application {
     private double time = 0;
     private Field fruit;
     AnimationTimer timer;
+    private long acc = 0;
+    private long last = 0;
 
     private Parent createContent(){
         root.setPrefSize(Constans.RIGHT_BORDER,Constans.DOWN_BORDER);
@@ -87,28 +89,32 @@ public class Game extends Application {
         launch(args);
     }
     public void update(){
-        time += 0.16;
-        if (time < Constans.GAME_SPEED) {
-            return;
+        if(last == 0) last = System.currentTimeMillis();
+        acc += System.currentTimeMillis() - last;
+        while (acc >= 1000./15.) {
+            acc -= 1000./15.;
+            if(fruit.samePosition(mySnake.getNextCoordinates())){
+                mySnake.grow();
+                moveFruit();
+            }
+            else {
+                mySnake.move();
+            }
+            if (mySnake.dead) {
+                System.out.println("Ty Jebany Debilu!");
+                timer.stop();
+                createEndScreen();
+                break;
+            }
+            if (mySnake.outOfBounds()) {
+                mySnake.dead = true;
+                timer.stop();
+                createEndScreen();
+                break;
+            }
         }
-        time = 0;
-        if(fruit.samePosition(mySnake.getNextCoordinates())){
-            mySnake.grow();
-            moveFruit();
-        }
-        else {
-            mySnake.move();
-        }
-        if (mySnake.dead) {
-            System.out.println("Ty Jebany Debilu!");
-            timer.stop();
-            createEndScreen();
-        }
-        if (mySnake.outOfBounds()) {
-            mySnake.dead = true;
-            timer.stop();
-            createEndScreen();
-        }
+        last = System.currentTimeMillis();
+
     }
     private void moveFruit(){
        int newX = rng.nextInt((int)Constans.RIGHT_BORDER / Constans.FIELD_WEIGHT) * Constans.FIELD_WEIGHT;

@@ -134,8 +134,8 @@ public class Snake {
         }
     }
     public boolean outOfBounds(){
-        if(head.getTranslateX() < Constans.LEFT_BORDER || head.getTranslateX() > Constans.RIGHT_BORDER) return true;
-        return head.getTranslateY() < Constans.UPPER_BORDER || head.getTranslateY() > Constans.DOWN_BORDER;
+        if(head.getTranslateX() < Constans.LEFT_BORDER || head.getTranslateX() >= Constans.RIGHT_BORDER) return true;
+        return head.getTranslateY() < Constans.UPPER_BORDER || head.getTranslateY() >= Constans.DOWN_BORDER;
     }
     public boolean eatenHimself(){
         dead = false;
